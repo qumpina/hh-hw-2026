@@ -119,3 +119,38 @@ def test_register_call_phone_number_contains_letters_should_raise_exception() ->
         switchboard.register_call(
             "1,Ivan Ivanov,+76545404000,2,John Smith,+7BBB51234567"
         )
+
+
+def test_register_call_fullname_empty_should_raise_exception() -> None:
+    switchboard = Switchboard()
+    with pytest.raises(InvalidCallFormatException, match="Incorrect format of user name"):
+        switchboard.register_call(
+            "1,,+79990000000,2,John Smith,+15551234567"
+        )
+    with pytest.raises(InvalidCallFormatException, match="Incorrect format of user name"):
+        switchboard.register_call(
+            "1,Ivan Ivanov,+79990000000,2,,+15551234567"
+        )
+
+
+def test_register_call_fullname_contains_numbers_should_raise_exception() -> None:
+    switchboard = Switchboard()
+    with pytest.raises(InvalidCallFormatException, match="Incorrect format of user name"):
+        switchboard.register_call(
+            "1,123Ivan Ivanov,+79990000000,2,John Smith,+15551234567"
+        )
+    with pytest.raises(InvalidCallFormatException, match="Incorrect format of user name"):
+        switchboard.register_call(
+            "1,Ivan Ivanov,+79990000000,2,John 3435Smith,+15551234567"
+        )
+
+def test_register_call_fullname_contains_first_name_and_second_name_should_raise_exception() -> None:
+    switchboard=Switchboard()
+    with pytest.raises(InvalidCallFormatException, match="Incorrect format of user name"):
+        switchboard.register_call(
+            "1, Ivanov,+79990000000,2,John Smith,+15551234567"
+        )
+    with pytest.raises(InvalidCallFormatException, match="Incorrect format of user name"):
+        switchboard.register_call(
+            "1,Ivan Ivanov,+79990000000,2,John  ,+15551234567"
+        )
